@@ -14,12 +14,13 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://siteforge-ai-u3pl.onrender.com",
-    "https://site-forge-17ecnetdd-mansisaini.vercel.app",
-    "https://site-forge-ehtxr3k1z-mansisaini.vercel.app"
-  ],
+  origin: function (origin, callback) {
+    if (!origin || origin.includes("localhost") || origin.includes("vercel.app") || origin.includes("onrender.com")) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 
