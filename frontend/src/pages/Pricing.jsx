@@ -71,7 +71,10 @@ const Pricing = () => {
           amount: amount,
           credits: plan.credits,
         },
-        { withCredentials: true },
+        { 
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        },
       );
 
       const options = {
@@ -88,7 +91,10 @@ const Pricing = () => {
             const verify = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}/api/payment/verify`,
             response,
-            { withCredentials: true },
+            { 
+              withCredentials: true,
+              headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+            },
           );
  
           console.log(verify.data);

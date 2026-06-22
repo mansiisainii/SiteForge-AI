@@ -20,8 +20,9 @@ const Navbar = () => {
     try {
       await axios.get(`${import.meta.env.VITE_SERVER_URL}/api/auth/logout`, {
         withCredentials: true,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
-
+      localStorage.removeItem("token");
       dispatch(setUserData(null));
       setOpenProfile(false);
     } catch (error) {

@@ -32,7 +32,10 @@ const Generate = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/website/generate`,
         { prompt },
-        { withCredentials: true },
+        { 
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        },
       );
 
       setProgress(100);

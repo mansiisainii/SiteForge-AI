@@ -27,6 +27,9 @@ const LoginModal = ({ open, onClose }) => {
         userDataPayload,
         { withCredentials: true },
       );
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+      }
       dispatch(setUserData(data));
       onClose();
     } catch (error) {

@@ -17,7 +17,10 @@ function Dashboard() {
     try {
       const result = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/api/website/deploy/${id}`,
-        { withCredentials: true },
+        { 
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        },
       );
       window.open(`${result.data.url}`, "_blank");
       setWebsites((prev) =>
@@ -38,7 +41,10 @@ function Dashboard() {
         setLoading(true);
         const result = await axios.get(
           `${import.meta.env.VITE_SERVER_URL}/api/website/getall`,
-          { withCredentials: true },
+          { 
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          },
         );
         setWebsites(result.data);
       } catch (error) {

@@ -38,7 +38,10 @@ const WebsiteEditor = () => {
     try {
       const result = await axios.get(
         `${import.meta.env.VITE_SERVER_URL}/api/website/deploy/${website._id}`,
-        { withCredentials: true },
+        { 
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        },
       );
       window.open(`${result.data.url}`, "_blank");
     } catch (error) {
@@ -60,7 +63,10 @@ const WebsiteEditor = () => {
       const result = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/website/update/${id}`,
         { prompt },
-        { withCredentials: true },
+        { 
+          withCredentials: true,
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+        },
       );
       setMessages((m) => [...m, { role: "ai", content: result.data.message }]);
       setCode(result.data.code);
@@ -76,7 +82,10 @@ const WebsiteEditor = () => {
       try {
         const result = await axios.get(
           `${import.meta.env.VITE_SERVER_URL}/api/website/getbyid/${id}`,
-          { withCredentials: true },
+          { 
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+          },
         );
         setWebsite(result.data);
         setCode(result.data.latestCode);
