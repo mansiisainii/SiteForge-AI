@@ -37,12 +37,13 @@ SITE TYPE:
 CODE QUALITY:
 - Proper indentation, readable, no minified code, no markdown, no explanations.
 
-RETURN RAW JSON ONLY:
-{
-"message": "Short confirmation",
-"code": "<FULL HTML DOCUMENT>"
-}
-RULES: valid JSON only, escape quotes, no markdown wrapper, no text outside JSON.
+RETURN YOUR RESPONSE IN EXACTLY THIS FORMAT (no markdown, no extra text, no code fences):
+
+---MESSAGE---
+Short confirmation here
+---CODE---
+<FULL HTML DOCUMENT HERE>
+---END---
 `;
 
 export const generateWebsite = async (req, res) => {
@@ -63,19 +64,20 @@ export const generateWebsite = async (req, res) => {
     const finalPrompt = masterPrompt.replace("{USER_PROMPT}", prompt)
     let raw = ""
     let parsed = null
-    //we used for loop because ai doesnt give response in one time sometimes so thats why we gave second chance to ai
-    for (let i = 0; i < 1 && !parsed; i++) {
+    for (let i = 0; i < 2 && !parsed; i++) {
       raw = await generateResponse(finalPrompt)
       parsed = await extractJson(raw)
 
-      if (!parsed ) {
-        raw = await generateResponse(finalPrompt + "\n\nRETURN ONLY RAW JSON")
+      if (!parsed) {
+        raw = await generateResponse(finalPrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
         parsed = await extractJson(raw)
       }
     }
-    if (!parsed.code) {
-      return res.status(400).json({ message: "AI returned invalid response" })
+
+    if (!parsed || !parsed.code) {
+      return res.status(400).json({ message: "AI returned an invalid response. Please try again." })
     }
+
     const website = await Website.create({
       user: user._id,
       title: prompt.slice(0, 60),
@@ -92,13 +94,13 @@ export const generateWebsite = async (req, res) => {
       remainingCredits: user.credits
     })
   } catch (error) {
-  console.error("GENERATE WEBSITE ERROR:");
-  console.error(error);
+    console.error("GENERATE WEBSITE ERROR:");
+    console.error(error);
 
-  return res.status(500).json({
-    message: error.message,
-  });
-}
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 }
 
 export const getWebsiteById = async (req, res) => {
@@ -140,18 +142,27 @@ export const changeWebsite = async (req, res) => {
 
     const udpatePrompt = `
     UPDATE THIS HTML WEBSITE.
-    
+
     CURRENT CODE:
     ${website.latestCode}
 
     USER REQUEST:
     ${prompt}
 
-    RETURN RAW JSON ONLY:
-    {
-      "message":"Short confirmation",
-      "code":"<UPDATE FULL HTML>"
-    }
+    DESIGN SYSTEM (KEEP CONSISTENT WHEN EDITING):
+    - Maintain bold accent color + gradient usage.
+    - Keep soft shadows (0 20px 60px rgba(0,0,0,0.12)) and 16-24px border-radius.
+    - Keep hover transforms and smooth transitions (0.3-0.5s ease).
+    - Keep mobile-first responsiveness, no horizontal scroll.
+    - No lorem ipsum or placeholders.
+
+    RETURN YOUR RESPONSE IN EXACTLY THIS FORMAT (no markdown, no extra text, no code fences):
+
+    ---MESSAGE---
+    Short confirmation here
+    ---CODE---
+    <FULL UPDATED HTML DOCUMENT HERE>
+    ---END---
     `
 
     let raw = ""
@@ -161,12 +172,13 @@ export const changeWebsite = async (req, res) => {
       parsed = await extractJson(raw)
 
       if (!parsed) {
-        raw = await generateResponse(udpatePrompt + "\n\nRETURN ONLY RAW JSON")
+        raw = await generateResponse(udpatePrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
         parsed = await extractJson(raw)
       }
     }
-    if (!parsed.code) {
-      return res.status(400).json({ message: "AI returned invalid response" })
+
+    if (!parsed || !parsed.code) {
+      return res.status(400).json({ message: "AI returned an invalid response. Please try again." })
     }
 
     website.conversation.push(
@@ -184,6 +196,9 @@ export const changeWebsite = async (req, res) => {
       remainingCredits: user.credits
     })
   } catch (error) {
+    console.error("CHANGE WEBSITE ERROR:");
+    console.error(error);
+
     return res.status(500).json({ message: error.message })
   }
 }
@@ -224,7 +239,7 @@ export const deployWebsite = async (req, res) => {
 }
 
 export const getBySlug = async (req, res) => {
-  try {  
+  try {
     const website = await Website.findOne({
       slug: req.params.slug
     })

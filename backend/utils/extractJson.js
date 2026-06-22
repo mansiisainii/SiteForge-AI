@@ -1,52 +1,31 @@
 const extractJson = async (text) => {
-if (!text) {
-return null;
-}
+  if (!text) {
+    return null;
+  }
 
-const cleaned = text
-.replace(/```json/gi, "")
-.replace(/```/g, "")
-.trim();
+  const cleaned = text
+    .replace(/```json/gi, "")
+    .replace(/```html/gi, "")
+    .replace(/```/g, "")
+    .trim();
 
-const openBracket = cleaned.indexOf("{");
-const closeBracket = cleaned.lastIndexOf("}");
+  const messageMatch = cleaned.match(/---MESSAGE---([\s\S]*?)---CODE---/);
+  const codeMatch = cleaned.match(/---CODE---([\s\S]*?)---END---/);
 
-if (openBracket === -1 || closeBracket === -1) {
-return null;
-}
+  if (!messageMatch || !codeMatch) {
+    console.log("DELIMITER PARSE FAILED");
+    console.log(cleaned.slice(0, 500));
+    return null;
+  }
 
-const jsonString = cleaned.slice(
-openBracket,
-closeBracket + 1
-);
+  const message = messageMatch[1].trim();
+  const code = codeMatch[1].trim();
 
-try {
-    console.log("JSON STRING:");
-console.log(jsonString);
-return JSON.parse(jsonString);
-} catch (err) {
-console.log("JSON PARSE ERROR:");
-console.log(err.message);
+  if (!code) {
+    return null;
+  }
 
-```
-const pos = Number(
-  err.message.match(/\d+/)?.[0]
-);
-
-if (!isNaN(pos)) {
-  console.log(
-    "ERROR NEAR:",
-    jsonString.substring(
-      Math.max(0, pos - 200),
-      pos + 200
-    )
-  );
-}
-
-return null;
-```
-
-}
+  return { message, code };
 };
 
 export default extractJson;
