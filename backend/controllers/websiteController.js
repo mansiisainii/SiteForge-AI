@@ -4,92 +4,45 @@ import { Website } from "../models/websiteModel.js";
 import extractJson from "../utils/extractJson.js";
 
 const masterPrompt = `
-YOU ARE AN EXPERT FRONTEND ENGINEER AND UI/UX DESIGNER.
+YOU ARE A SENIOR PRODUCT DESIGNER AND FRONTEND ENGINEER who builds visually striking, award-worthy websites, not generic templates.
 
-TASK:
-Create a complete production-ready website based on the user's request.
-
-USER REQUEST:
+TASK: Build a complete production-ready website for this request:
 {USER_PROMPT}
 
-REQUIREMENTS:
+TECH:
+- Only HTML, CSS, JS. One complete HTML document.
+- Exactly one <style> and one <script> tag.
+- No external libraries. System fonts only (pair a bold display stack for headings with a clean stack for body).
 
-1. TECHNOLOGY
+DESIGN SYSTEM (MANDATORY):
+- Color: one bold accent color (not default blue/gray) + at least one gradient (bg, button, or text). Avoid plain white sections — use tints, dark sections, or alternate light/dark.
+- Typography: hero heading 48-72px, bold, tight line-height. Clear scale: hero > headings > body > captions.
+- Layout: generous whitespace (80-140px section padding). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
+- Depth: soft shadows (e.g. 0 20px 60px rgba(0,0,0,0.12)), 16-24px border-radius, subtle background shapes/gradients/patterns.
+- Motion: entrance animations on scroll/load, hover = transform (scale/lift/shadow growth), transitions 0.3-0.5s ease.
+- Images: if no real source available, use CSS/inline SVG shapes instead of empty broken image boxes.
 
-* Use ONLY HTML, CSS, and JavaScript.
-* Return ONE complete HTML document.
-* Include exactly ONE <style> tag and ONE <script> tag.
-* No external CSS libraries.
-* No external JS libraries.
-* Use system fonts only.
+RESPONSIVE:
+- Mobile-first, no horizontal scroll, touch targets ≥44px, use clamp() for fluid type/spacing.
 
-2. DESIGN
+CONTENT:
+- Realistic, specific content matching the site type. No lorem ipsum, no placeholders.
 
-* Modern 2026-style UI.
-* Beautiful layout and spacing.
-* Professional color palette.
-* Smooth animations and hover effects.
-* Fully responsive on mobile, tablet, and desktop.
+FUNCTIONALITY:
+- All buttons/nav must work (smooth scroll, toggles, validation). No broken JS, no null refs.
 
-3. RESPONSIVENESS
+SITE TYPE:
+- Build sections that fit the actual request (game→playable UI, portfolio→projects, SaaS→features/pricing/CTA, e-commerce→products/cart, restaurant→menu). Don't force Home/About/Services/Contact if irrelevant.
 
-* Mobile-first design.
-* Use Flexbox and Grid where appropriate.
-* No horizontal scrolling.
-* Images must be responsive.
-* Touch-friendly buttons.
-
-4. CONTENT
-
-* Generate realistic content.
-* No lorem ipsum.
-* No placeholders.
-* Match the website type requested by the user.
-
-5. FUNCTIONALITY
-
-* Every button must work.
-* Every navigation item must work.
-* No broken JavaScript.
-* No null element references.
-* Forms must have validation.
-* All interactive features must function correctly.
-
-6. WEBSITE TYPE RULE
-   IMPORTANT:
-   Generate pages according to the user's request.
-
-Examples:
-
-* Game website → Build a playable game interface.
-* Portfolio → Build portfolio sections.
-* SaaS → Build SaaS landing page.
-* E-commerce → Build product pages.
-* Restaurant → Build restaurant website.
-
-DO NOT force Home/About/Services/Contact if they don't fit the project.
-
-7. CODE QUALITY
-
-* Proper indentation.
-* Readable code.
-* No minified code.
-* No markdown.
-* No explanations.
+CODE QUALITY:
+- Proper indentation, readable, no minified code, no markdown, no explanations.
 
 RETURN RAW JSON ONLY:
-
 {
 "message": "Short confirmation",
 "code": "<FULL HTML DOCUMENT>"
 }
-
-ABSOLUTE RULES:
-
-* Return valid JSON only.
-* Escape all quotes properly.
-* Do not wrap response in markdown.
-* Do not include any text outside JSON.
+RULES: valid JSON only, escape quotes, no markdown wrapper, no text outside JSON.
 `;
 
 export const generateWebsite = async (req, res) => {
