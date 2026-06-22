@@ -14,8 +14,12 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors({
-  origin: ["http://localhost:5173",
-  "https://siteforge-ai-u3pl.onrender.com"],
+  origin: [
+    "http://localhost:5173",
+    "https://siteforge-ai-u3pl.onrender.com",
+    "https://site-forge-17ecnetdd-mansisaini.vercel.app",
+    "https://site-forge-ehtxr3k1z-mansisaini.vercel.app"
+  ],
   credentials: true,
 }));
 
