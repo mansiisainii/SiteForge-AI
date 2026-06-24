@@ -59,17 +59,7 @@ const Home = () => {
             </span>
           </motion.h1>
 
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="max-w-2xl mx-auto mt-6 text-lg text-gray-400"
-          >
-            Generate stunning, responsive websites instantly using AI. No coding
-            required. Perfect for startups, creators and freelancers.
-          </motion.p>
-
+          
           {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
