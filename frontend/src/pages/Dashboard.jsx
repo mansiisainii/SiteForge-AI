@@ -22,13 +22,11 @@ function Dashboard() {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         },
       );
-      let url = result.data.url;
-      if (!url.startsWith("http")) url = "https://" + url;
-      window.open(url, "_blank");
+      window.open(`${result.data.url}`, "_blank");
       setWebsites((prev) =>
         prev.map((w) =>
           w._id === id
-            ? { ...w, deployed: true, deployUrl: url }
+            ? { ...w, deployed: true, deployUrl: result.data.url }
             : w,
         ),
       );
@@ -60,9 +58,7 @@ function Dashboard() {
   }, []);
 
   const handleCopy = async (site) => {
-    let url = site.deployUrl;
-    if (!url.startsWith("http")) url = "https://" + url;
-    await navigator.clipboard.writeText(url);
+    await navigator.clipboard.writeText(site.deployUrl);
     setCopiedId(site._id);
     setTimeout(() => setCopiedId(null), 2000);
   };
@@ -144,7 +140,7 @@ function Dashboard() {
                     </p>
                     {!w.deployed ? (
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleDeploy(w._id); }}
+                        onClick={() => handleDeploy(w._id)}
                         className="mt-auto flex items-center justify-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-linear-to-r from-indigo-500 to-purple-500 hover:scale-105 transition"
                       >
                         <Rocket size={18} />
