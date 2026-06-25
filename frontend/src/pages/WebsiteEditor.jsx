@@ -34,20 +34,20 @@ const WebsiteEditor = () => {
     }, 500);
   };
 
-  const handleDeploy = async (id) => {
-    try {
-      const result = await axios.get(
-        `${import.meta.env.VITE_SERVER_URL}/api/website/deploy/${website._id}`,
-        { 
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-        },
-      );
-      window.open(`${result.data.url}`, "_blank");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+ const handleDeploy = async (id) => {
+  try {
+    const result = await axios.get(
+      `${import.meta.env.VITE_SERVER_URL}/api/website/deploy/${website._id}`,
+      { 
+        withCredentials: true,
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
+      },
+    );
+    setWebsite((prev) => ({ ...prev, deployed: true, deployUrl: result.data.url }));
+  } catch (error) {
+    console.log(error);
+  }
+};
 
   useEffect(() => {
     const intervalId = setInterval(() => {
