@@ -44,6 +44,7 @@ const WebsiteEditor = () => {
       },
     );
     setWebsite((prev) => ({ ...prev, deployed: true, deployUrl: result.data.url }));
+    window.open(result.data.url, "_blank");
   } catch (error) {
     console.log(error);
   }
