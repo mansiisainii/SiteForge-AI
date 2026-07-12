@@ -12,7 +12,7 @@ const plans = [
     name: "Free",
     price: "₹0",
     credits: 100,
-    description: "Perfect to explore Dora ai",
+    description: "Perfect to explore SiteForge-AI",
     features: [
       "AI website generation",
       "Responsive html outputs",
@@ -101,7 +101,7 @@ const Pricing = () => {
           dispatch(setUserData(verify.data.user));
           }
           catch(error){
-            console.log("❌ Verify payment error",error)
+            console.log("Verify payment error",error)
           }
           
         },
