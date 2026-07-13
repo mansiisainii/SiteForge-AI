@@ -13,6 +13,8 @@ TECH:
 - Only HTML, CSS, JS. One complete HTML document.
 - Exactly one <style> and one <script> tag.
 - No external libraries. System fonts only (pair a bold display stack for headings with a clean stack for body).
+- ALWAYS structure JS into named functions (renderHero(), renderNavbar(), renderFooter(), initApp()). Call all from initApp() at bottom.
+- ES6+ only — const/let, arrow functions, template literals, querySelector. Zero var, zero jQuery.
 
 DESIGN SYSTEM (MANDATORY):
 - Color: one bold accent color (not default blue/gray) + at least one gradient (bg, button, or text). Avoid plain white sections — use tints, dark sections, or alternate light/dark.
@@ -20,6 +22,7 @@ DESIGN SYSTEM (MANDATORY):
 - Layout: generous whitespace (80-140px section padding). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
 - Depth: soft shadows (e.g. 0 20px 60px rgba(0,0,0,0.12)), 16-24px border-radius, subtle background shapes/gradients/patterns.
 - Motion: entrance animations on scroll/load, hover = transform (scale/lift/shadow growth), transitions 0.3-0.5s ease.
+- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards, animated gradient blob, typewriter heading, custom cursor, or animated counters.
 - Images: if no real source available, use CSS/inline SVG shapes instead of empty broken image boxes.
 
 RESPONSIVE:
