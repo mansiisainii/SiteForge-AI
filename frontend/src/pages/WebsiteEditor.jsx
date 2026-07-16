@@ -57,12 +57,15 @@ const WebsiteEditor = () => {
   }, [updateLoading]);
 
   const handleUpdate = async () => {
-    setMessages((m) => [...m, { role: "user", content: prompt }]);
+    if (!prompt.trim()) return;
+    const currentPrompt = prompt;
+    setPrompt("");
+    setMessages((m) => [...m, { role: "user", content: currentPrompt }]);
     setUpdateLoading(true);
     try {
       const result = await axios.post(
         `${import.meta.env.VITE_SERVER_URL}/api/website/update/${id}`,
-        { prompt },
+        { prompt: currentPrompt },
         { 
           withCredentials: true,
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
@@ -74,6 +77,15 @@ const WebsiteEditor = () => {
       console.log(error);
     } finally {
       setUpdateLoading(false);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (!updateLoading && prompt.trim()) {
+        handleUpdate();
+      }
     }
   };
 
@@ -155,6 +167,7 @@ const WebsiteEditor = () => {
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
+                onKeyDown={handleKeyDown}
                 rows={1}
                 placeholder="Describe changes..."
                 className="flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-outline-none"
@@ -247,6 +260,7 @@ const WebsiteEditor = () => {
                   <textarea
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     rows={1}
                     placeholder="Describe changes..."
                     className="flex-1 resize-none rounded-2xl px-4 py-3 bg-white/5 border border-white/10 text-outline-none"
