@@ -29,7 +29,7 @@ export const createOrder = async (req, res) => {
       status: "pending",
     });
     console.log(razorpayOrder);
-    return res.json(razorpayOrder);
+    return res.json({ ...razorpayOrder, keyId: process.env.RAZORPAY_KEY_ID });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

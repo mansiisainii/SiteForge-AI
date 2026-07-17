@@ -78,7 +78,7 @@ const Pricing = () => {
       );
 
       const options = {
-        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID || result.data.keyId,
         amount: result.data.amount,
         currency: "INR",
         name: "SiteForge-AI",
