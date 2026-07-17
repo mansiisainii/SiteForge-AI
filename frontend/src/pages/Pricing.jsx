@@ -99,6 +99,7 @@ const Pricing = () => {
  
           console.log(verify.data);
           dispatch(setUserData(verify.data.user));
+          navigate("/");
           }
           catch(error){
             console.log("Verify payment error",error)
