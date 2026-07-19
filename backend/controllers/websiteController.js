@@ -10,23 +10,27 @@ TASK: Build a complete production-ready website for this request:
 {USER_PROMPT}
 
 TECH:
-- Only HTML, CSS, JS. One complete HTML document.
-- Exactly one <style> and one <script> tag.
-- No external libraries. System fonts only (pair a bold display stack for headings with a clean stack for body).
+- Only HTML, Tailwind CSS, JS. One complete HTML document.
+- Always include in <head>:
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+- Use Tailwind utility classes for ALL styling. Write custom CSS only if Tailwind absolutely cannot handle it.
+- Exactly one <script> tag (excluding CDN scripts). Initialize AOS with AOS.init() inside it.
 - ALWAYS structure JS into named functions (renderHero(), renderNavbar(), renderFooter(), initApp()). Call all from initApp() at bottom.
 - ES6+ only — const/let, arrow functions, template literals, querySelector. Zero var, zero jQuery.
 
 DESIGN SYSTEM (MANDATORY):
-- Color: one bold accent color (not default blue/gray) + at least one gradient (bg, button, or text). Avoid plain white sections — use tints, dark sections, or alternate light/dark.
-- Typography: hero heading 48-72px, bold, tight line-height. Clear scale: hero > headings > body > captions.
-- Layout: generous whitespace (80-140px section padding). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
-- Depth: soft shadows (e.g. 0 20px 60px rgba(0,0,0,0.12)), 16-24px border-radius, subtle background shapes/gradients/patterns.
-- Motion: entrance animations on scroll/load, hover = transform (scale/lift/shadow growth), transitions 0.3-0.5s ease.
-- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards, animated gradient blob, typewriter heading, custom cursor, or animated counters.
-- Images: if no real source available, use CSS/inline SVG shapes instead of empty broken image boxes.
+- Color: one bold accent color (not default blue/gray) + at least one gradient (bg, button, or text) via Tailwind gradient classes. Avoid plain white sections — use tints, dark sections, or alternate light/dark.
+- Typography: hero heading 48-72px, bold, tight line-height. Clear scale: hero > headings > body > captions. Use clamp() for fluid sizing.
+- Layout: generous whitespace (py-20 to py-36). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
+- Depth: use Tailwind shadow classes (shadow-xl, shadow-2xl), rounded-2xl or rounded-3xl, subtle background gradients/patterns.
+- Motion: use AOS attributes (data-aos="fade-up", data-aos="fade-right" etc.) for entrance animations. Hover = Tailwind hover: classes (scale, shadow growth), transitions duration-300.
+- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards (backdrop-blur), animated gradient blob, typewriter heading, custom cursor, or animated counters.
+- Images: if no real source available, use Tailwind bg-gradient + rounded shapes or inline SVG instead of broken image boxes.
 
 RESPONSIVE:
-- Mobile-first, no horizontal scroll, touch targets ≥44px, use clamp() for fluid type/spacing.
+- Mobile-first using Tailwind responsive prefixes (sm: md: lg:). No horizontal scroll, touch targets ≥44px.
 
 CONTENT:
 - Realistic, specific content matching the site type. No lorem ipsum, no placeholders.
@@ -252,5 +256,37 @@ export const getBySlug = async (req, res) => {
     return res.status(200).json(website)
   } catch (error) {
     return res.status(500).json({ message: error.message })
+  }
+}
+
+export const saveTemplate = async (req, res) => {
+  try {
+    const { html, name } = req.body;
+    if (!html || !name) {
+      return res.status(400).json({ message: "HTML and name are required" });
+    }
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const website = await Website.create({
+      user: user._id,
+      title: name.slice(0, 60),
+      latestCode: html,
+      conversation: [
+        { role: "user", content: `Create a ${name} website.` },
+        { role: "ai", content: `I have created the ${name} template for you.` }
+      ]
+    });
+
+    return res.status(201).json({
+      websiteId: website._id,
+      remainingCredits: user.credits
+    });
+  } catch (error) {
+    console.error("SAVE TEMPLATE ERROR:");
+    console.error(error);
+    return res.status(500).json({ message: error.message });
   }
 }

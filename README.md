@@ -1,10 +1,10 @@
 # SiteForge-AI 🚀
 
-SiteForge-AI is an advanced AI-powered website builder and code editor that allows users to generate, edit, and deploy websites seamlessly. Built with modern web technologies and integrating powerful AI models like  Groq, it provides an intuitive platform for rapid web development.
+SiteForge-AI is an advanced AI-powered website builder and code editor that allows users to generate, edit, and deploy websites seamlessly. Built with modern web technologies and integrating powerful AI models like Google Gemini and Groq, it provides an intuitive platform for rapid web development.
 
 ## 🌟 Features
 
-- **AI-Powered Code Generation**: Leverage Groq SDK to instantly generate website layouts and components.
+- **AI-Powered Code Generation**: Leverage Google GenAI (Gemini) and Groq SDK to instantly generate website layouts and components.
 - **Interactive Web Editor**: Built-in Monaco Editor for real-time code editing and previews.
 - **Secure Authentication**: Robust user authentication combining Firebase on the frontend and JWT-based auth on the backend.
 - **Premium Subscriptions**: Integrated with Razorpay for secure payment processing and subscription management.
@@ -28,7 +28,7 @@ SiteForge-AI is an advanced AI-powered website builder and code editor that allo
 - **Environment**: Node.js, Express.js
 - **Database**: MongoDB (Mongoose)
 - **Authentication**: JWT (JSON Web Tokens), Cookie Parser
-- **AI Integrations**: Groq SDK
+- **AI Integrations**: @google/genai, Groq SDK
 - **Payments**: Razorpay
 
 ## 🚀 Getting Started
@@ -38,7 +38,7 @@ Follow these steps to set up the project locally.
 ### Prerequisites
 - Node.js installed on your machine
 - MongoDB instance (local or Atlas)
-- API Keys for Groq, Firebase, and Razorpay
+- API Keys for Google Gemini, Groq, Firebase, and Razorpay
 
 ### Installation
 
@@ -58,6 +58,7 @@ Follow these steps to set up the project locally.
    PORT=3000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
+   GEMINI_API_KEY=your_gemini_api_key
    GROQ_API_KEY=your_groq_api_key
    RAZORPAY_KEY_ID=your_razorpay_key
    RAZORPAY_KEY_SECRET=your_razorpay_secret

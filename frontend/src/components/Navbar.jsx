@@ -53,13 +53,17 @@ const Navbar = () => {
 
           {/* Right Side */}
           <div className="flex items-center gap-5">
-            {/* Pricing */}
-            {/* <button
-              onClick={() => navigate("/pricing")}
-              className="hidden md:block text-sm text-zinc-400 hover:text-white transition"
-            >
-              Pricing
-            </button> */}
+
+            {/* Dashboard */}
+            {userData && (
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                onClick={() => navigate("/dashboard")}
+                className="hidden md:block text-sm px-4 py-1.5 rounded-full border border-white/10 text-zinc-300 hover:text-white hover:bg-white/5 transition"
+              >
+                Dashboard
+              </motion.button>
+            )}
 
             {/* Credits */} 
             {userData && (
