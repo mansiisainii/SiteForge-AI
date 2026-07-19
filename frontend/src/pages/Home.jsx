@@ -17,11 +17,11 @@ const Home = () => {
     <>
       <Navbar />
       <section className="relative min-h-screen bg-[#050505] text-white overflow-hidden">
-        
+
         {/* Glow background */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -left-40 w-125 h-125 bg-indigo-600/20 rounded-full blur-[140px]" />
-          <div className="absolute bottom-0 right-0 w-125 h-125 bg-purple-600/20 rounded-full blur-[140px]" />
+          <div className="absolute -top-40 -left-40 w-125 h-125 bg-indigo-600/15 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 right-0 w-125 h-125 bg-purple-600/15 rounded-full blur-[140px]" />
         </div>
 
         {/* Grid background */}
@@ -50,7 +50,7 @@ const Home = () => {
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-5xl md:text-7xl font-bold leading-tight"
+            className="text-3xl md:text-5xl font-bold leading-tight"
           >
             Build Websites with
             <br />
@@ -59,7 +59,7 @@ const Home = () => {
             </span>
           </motion.h1>
 
-          
+
           {/* Buttons */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
