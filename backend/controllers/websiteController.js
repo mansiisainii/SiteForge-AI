@@ -2,6 +2,7 @@ import { generateResponse } from "../config/groq.js";
 import { User } from "../models/userModel.js";
 import { Website } from "../models/websiteModel.js";
 import extractJson from "../utils/extractJson.js";
+import mongoose from "mongoose";
 
 const masterPrompt = `
 YOU ARE A SENIOR PRODUCT DESIGNER AND FRONTEND ENGINEER who builds visually striking, award-worthy websites, not generic templates.
@@ -131,6 +132,9 @@ export const changeWebsite = async (req, res) => {
     if (!prompt) {
       return res.status(400).json({ message: "Prompt is required" })
     }
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: "Invalid website ID" })
+    }
     const website = await Website.findOne({
       _id: req.params.id,
       user: req.user._id
@@ -175,11 +179,26 @@ export const changeWebsite = async (req, res) => {
     let raw = ""
     let parsed = null
     for (let i = 0; i < 2 && !parsed; i++) {
-      raw = await generateResponse(udpatePrompt)
+      console.log(`[Groq API] Attempt ${i + 1} starting...`);
+      try {
+        raw = await generateResponse(udpatePrompt)
+        console.log(`[Groq API] Attempt ${i + 1} response received.`);
+      } catch (err) {
+        console.error(`[Groq API] Attempt ${i + 1} crashed:`, err);
+        return res.status(500).json({ message: "Error communicating with AI service" });
+      }
+      
       parsed = await extractJson(raw)
 
       if (!parsed) {
-        raw = await generateResponse(udpatePrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
+        console.log(`[Groq API] Retry ${i + 1} due to parsing failure...`);
+        try {
+          raw = await generateResponse(udpatePrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
+          console.log(`[Groq API] Retry ${i + 1} response received.`);
+        } catch (err) {
+          console.error(`[Groq API] Retry ${i + 1} crashed:`, err);
+          return res.status(500).json({ message: "Error communicating with AI service" });
+        }
         parsed = await extractJson(raw)
       }
     }
@@ -188,9 +207,12 @@ export const changeWebsite = async (req, res) => {
       return res.status(400).json({ message: "AI returned an invalid response. Please try again." })
     }
 
+    if (!website.conversation) {
+      website.conversation = [];
+    }
     website.conversation.push(
-      { role: "ai", content: parsed.message },
       { role: "user", content: prompt },
+      { role: "ai", content: parsed.message || "Website updated." }
     )
 
     website.latestCode = parsed.code
