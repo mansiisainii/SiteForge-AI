@@ -38,7 +38,7 @@ const Navbar = () => {
         transition={{ duration: 0.4 }}
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/40 border-b border-white/10"
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div className="max-w-full w-full mx-auto pl-2 pr-8 md:pl-4 md:pr-16 lg:pl-4 lg:pr-24 py-4 flex justify-between items-center">
           {/* Logo */}
           <div
             onClick={() => navigate("/")}
@@ -52,7 +52,7 @@ const Navbar = () => {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-3 sm:gap-5 lg:gap-6">
 
             {/* Dashboard */}
             {userData && (
@@ -88,7 +88,7 @@ const Navbar = () => {
                 >
                   <img
                     referrerPolicy="no-referrer"
-                    className="w-9 h-9 rounded-full border border-white/20 object-cover hover:scale-105 transition"
+                    className="w-8 h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full border border-white/20 object-cover hover:scale-105 transition"
                     src={
                       userData?.avatar ||
                       `https://ui-avatars.com/api/?name=${userData.name}`

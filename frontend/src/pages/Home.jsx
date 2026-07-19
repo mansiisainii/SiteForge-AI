@@ -34,7 +34,7 @@ const Home = () => {
           }}
         />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20 text-center">
+        <div className="relative z-10 max-w-[1400px] mx-auto px-6 md:px-10 lg:px-12 pt-32 pb-20 text-center">
           {/* Badge */}
           <motion.div
             initial={{ opacity: 0, y: -20 }}
@@ -77,7 +77,7 @@ const Home = () => {
           </motion.div>
 
           {/* Feature cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-32">
             <div className="p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur hover:border-indigo-400 transition">
               <Zap className="text-yellow-400 mb-4" />
               <h3 className="font-semibold text-lg mb-2">Instant Generation</h3>
