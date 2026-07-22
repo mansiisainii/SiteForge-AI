@@ -22,12 +22,13 @@ TECH:
 - ES6+ only — const/let, arrow functions, template literals, querySelector. Zero var, zero jQuery.
 
 DESIGN SYSTEM (MANDATORY):
-- Color: one bold accent color (not default blue/gray) + at least one gradient (bg, button, or text) via Tailwind gradient classes. Avoid plain white sections — use tints, dark sections, or alternate light/dark.
+- Color: pick ONE accent color that matches the site type and mood — NOT purple, NOT generic blue, NOT gray. Choose intentionally: e.g. amber for restaurant, cyan for SaaS, emerald for finance, rose for beauty, orange for gaming, indigo for portfolio. Use it consistently across buttons, highlights, and borders only — never as a full background.
+- Background: ALWAYS dark (#0a0a0a, #0f0f0f, #080808, or site-appropriate dark tone). NEVER use a solid bright/vibrant color as the page background. Avoid loud gradient blobs covering the full hero — use them subtly (max 300px blur, low opacity 0.15-0.2, positioned at edges).
 - Typography: hero heading 48-72px, bold, tight line-height. Clear scale: hero > headings > body > captions. Use clamp() for fluid sizing.
 - Layout: generous whitespace (py-20 to py-36). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
 - Depth: use Tailwind shadow classes (shadow-xl, shadow-2xl), rounded-2xl or rounded-3xl, subtle background gradients/patterns.
 - Motion: use AOS attributes (data-aos="fade-up", data-aos="fade-right" etc.) for entrance animations. Hover = Tailwind hover: classes (scale, shadow growth), transitions duration-300.
-- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards (backdrop-blur), animated gradient blob, typewriter heading, custom cursor, or animated counters.
+- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards (backdrop-blur), subtle animated gradient blob (low opacity, edge-only), typewriter heading, custom cursor, or animated counters.
 - Images: if no real source available, use Tailwind bg-gradient + rounded shapes or inline SVG instead of broken image boxes.
 
 RESPONSIVE:
@@ -38,6 +39,7 @@ CONTENT:
 
 FUNCTIONALITY:
 - All buttons/nav must work (smooth scroll, toggles, validation). No broken JS, no null refs.
+- game → fully playable in browser, dark themed UI, canvas with glow border, HUD score display, game over overlay, keyboard controls shown on screen. NEVER use bright solid backgrounds for games.
 
 SITE TYPE:
 - Build sections that fit the actual request (game→playable UI, portfolio→projects, SaaS→features/pricing/CTA, e-commerce→products/cart, restaurant→menu). Don't force Home/About/Services/Contact if irrelevant.
