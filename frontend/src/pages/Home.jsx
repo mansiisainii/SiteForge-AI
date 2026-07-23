@@ -18,11 +18,6 @@ const Home = () => {
       <Navbar />
       <section className="relative min-h-screen bg-[#050505] text-white overflow-hidden">
 
-        {/* Glow background */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-40 -left-40 w-125 h-125 bg-indigo-600/15 rounded-full blur-[140px]" />
-          <div className="absolute bottom-0 right-0 w-125 h-125 bg-purple-600/15 rounded-full blur-[140px]" />
-        </div>
 
         {/* Grid background */}
         <div
@@ -54,7 +49,7 @@ const Home = () => {
           >
             Build Websites with
             <br />
-            <span className="bg-linear-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent">
+            <span className="text-[#818cf8]">
               AI in Seconds
             </span>
           </motion.h1>
