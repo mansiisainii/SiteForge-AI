@@ -5,54 +5,70 @@ import extractJson from "../utils/extractJson.js";
 import mongoose from "mongoose";
 
 const masterPrompt = `
-YOU ARE A SENIOR PRODUCT DESIGNER AND FRONTEND ENGINEER who builds visually striking, award-worthy websites, not generic templates.
+YOU ARE AN EXPERT FRONTEND DEVELOPER. Build exactly what is requested — no assumptions, no forced styles.
 
-TASK: Build a complete production-ready website for this request:
+TASK: Build a complete website for this request:
 {USER_PROMPT}
 
 TECH:
-- Only HTML, Tailwind CSS, JS. One complete HTML document.
-- Always include in <head>:
+- Single HTML file. Tailwind CSS + AOS via CDN.
+- Include in <head>:
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-- Use Tailwind utility classes for ALL styling. Write custom CSS only if Tailwind absolutely cannot handle it.
-- Exactly one <script> tag (excluding CDN scripts). Initialize AOS with AOS.init() inside it.
-- ALWAYS structure JS into named functions (renderHero(), renderNavbar(), renderFooter(), initApp()). Call all from initApp() at bottom.
-- ES6+ only — const/let, arrow functions, template literals, querySelector. Zero var, zero jQuery.
+- AOS.init({ duration: 700, once: true }) in script tag.
+- ES6+ only. Zero var, zero jQuery.
 
-DESIGN SYSTEM (MANDATORY):
-- Color: pick ONE accent color that matches the site type and mood — NOT purple, NOT generic blue, NOT gray. Choose intentionally: e.g. amber for restaurant, cyan for SaaS, emerald for finance, rose for beauty, orange for gaming, indigo for portfolio. Use it consistently across buttons, highlights, and borders only — never as a full background.
-- Background: ALWAYS dark (#0a0a0a, #0f0f0f, #080808, or site-appropriate dark tone). NEVER use a solid bright/vibrant color as the page background. Avoid loud gradient blobs covering the full hero — use them subtly (max 300px blur, low opacity 0.15-0.2, positioned at edges).
-- Typography: hero heading 48-72px, bold, tight line-height. Clear scale: hero > headings > body > captions. Use clamp() for fluid sizing.
-- Layout: generous whitespace (py-20 to py-36). Use Grid/Flexbox creatively — avoid plain centered card grids only; add asymmetry, overlap, or decorative shapes.
-- Depth: use Tailwind shadow classes (shadow-xl, shadow-2xl), rounded-2xl or rounded-3xl, subtle background gradients/patterns.
-- Motion: use AOS attributes (data-aos="fade-up", data-aos="fade-right" etc.) for entrance animations. Hover = Tailwind hover: classes (scale, shadow growth), transitions duration-300.
-- WOW FACTOR (MANDATORY): add exactly one — pick what fits the site: particle/floating background, parallax hero, glassmorphism cards (backdrop-blur), subtle animated gradient blob (low opacity, edge-only), typewriter heading, custom cursor, or animated counters.
-- Images: if no real source available, use Tailwind bg-gradient + rounded shapes or inline SVG instead of broken image boxes.
+DESIGN — USE JUDGMENT:
+- Choose color scheme that fits the request naturally.
+  Light site if it suits (bakery, kids, wedding, health).
+  Dark site if it suits (tech, gaming, portfolio, SaaS).
+  Don't force dark or light — match the vibe.
+- Pick accent colors naturally. No restrictions.
+- Typography: clear hierarchy, hero heading large and bold.
+- Layout: clean, well-spaced, visually balanced.
+- Cards: consistent border-radius, subtle shadow, padding.
+- Animations: AOS on section entries, hover transitions.
 
-RESPONSIVE:
-- Mobile-first using Tailwind responsive prefixes (sm: md: lg:). No horizontal scroll, touch targets ≥44px.
+IMAGES:
+- Use Picsum for all images:
+  <img src="https://picsum.photos/seed/{name}/{w}/{h}"
+  class="w-full h-48 object-cover rounded-xl"/>
+- Every card/product/dish/person needs an image.
+- Unique seed per image. NEVER invented URLs.
 
 CONTENT:
-- Realistic, specific content matching the site type. No lorem ipsum, no placeholders.
+- Real names, real prices, real descriptions.
+- BANNED: "Product 1", "Item 1", "Lorem ipsum",
+  "Description here", generic placeholder text.
+- Minimum 6 items in any listing section.
+- Brand/site name must be creative and relevant.
+
+HERO:
+- Always full and complete — never minimal or empty.
+- Real brand name + tagline + image + CTA buttons.
+
+SECTIONS:
+- Build what makes sense for the request.
+- SaaS → hero, features, pricing, footer.
+- Restaurant → hero, menu, about, hours, footer.
+- Ecommerce → hero, products, cart, footer.
+- Portfolio → hero, skills, projects, contact, footer.
+- Game → playable canvas, score, restart, controls.
+- Use your judgment for anything else.
 
 FUNCTIONALITY:
-- All buttons/nav must work (smooth scroll, toggles, validation). No broken JS, no null refs.
-- game → fully playable in browser, dark themed UI, canvas with glow border, HUD score display, game over overlay, keyboard controls shown on screen. NEVER use bright solid backgrounds for games.
+- All nav links smooth scroll correctly.
+- Tabs, toggles, forms all working.
+- Cart functional for ecommerce.
+- Games fully playable.
+- Zero broken JS. Zero null refs.
 
-SITE TYPE:
-- Build sections that fit the actual request (game→playable UI, portfolio→projects, SaaS→features/pricing/CTA, e-commerce→products/cart, restaurant→menu). Don't force Home/About/Services/Contact if irrelevant.
-
-CODE QUALITY:
-- Proper indentation, readable, no minified code, no markdown, no explanations.
-
-RETURN YOUR RESPONSE IN EXACTLY THIS FORMAT (no markdown, no extra text, no code fences):
-
+RETURN EXACTLY:
 ---MESSAGE---
-Short confirmation here
+One line confirmation
 ---CODE---
-<FULL HTML DOCUMENT HERE>
+[complete HTML]
 ---END---
 `;
 
@@ -153,31 +169,35 @@ export const changeWebsite = async (req, res) => {
       return res.status(400).json({ message: "You have not enough credits to generate a website" })
     }
 
-    const udpatePrompt = `
-    UPDATE THIS HTML WEBSITE.
+    const updatePrompt = `
+UPDATE THE FOLLOWING HTML WEBSITE BASED ON USER REQUEST.
 
-    CURRENT CODE:
-    ${website.latestCode}
+CURRENT CODE:
+${website.latestCode}
 
-    USER REQUEST:
-    ${prompt}
+USER REQUEST:
+${prompt}
 
-    DESIGN SYSTEM (KEEP CONSISTENT WHEN EDITING):
-    - Maintain bold accent color + gradient usage.
-    - Keep soft shadows (0 20px 60px rgba(0,0,0,0.12)) and 16-24px border-radius.
-    - Keep hover transforms and smooth transitions (0.3-0.5s ease).
-    - Keep mobile-first responsiveness, no horizontal scroll.
-    - No lorem ipsum or placeholders.
+RULES FOR UPDATING:
+1. Make ONLY the changes the user requested. 
+   Do not redesign or restructure anything else.
+2. Keep all existing Tailwind classes, AOS animations, 
+   and JS functions untouched unless user asked to change them.
+3. Keep the same color scheme, layout, and design system.
+4. Keep all working functionality intact.
+5. Return the COMPLETE updated HTML file — not just the changed part.
+6. No lorem ipsum, no placeholders in new content.
+7. If user asks for new section/card — follow same card style 
+   as existing ones (bg-white/5 border border-white/10 rounded-2xl).
 
-    RETURN YOUR RESPONSE IN EXACTLY THIS FORMAT (no markdown, no extra text, no code fences):
+RETURN EXACTLY THIS FORMAT (no markdown, no code fences):
 
-    ---MESSAGE---
-    Short confirmation here
-    ---CODE---
-    <FULL UPDATED HTML DOCUMENT HERE>
-    ---END---
-    `
-
+---MESSAGE---
+Short confirmation here
+---CODE---
+<FULL UPDATED HTML DOCUMENT HERE>
+---END---
+`
     let raw = ""
     let parsed = null
     for (let i = 0; i < 2 && !parsed; i++) {
