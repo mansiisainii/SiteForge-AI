@@ -203,7 +203,7 @@ Short confirmation here
     for (let i = 0; i < 2 && !parsed; i++) {
       console.log(`[Groq API] Attempt ${i + 1} starting...`);
       try {
-        raw = await generateResponse(udpatePrompt)
+       raw = await generateResponse(updatePrompt)
         console.log(`[Groq API] Attempt ${i + 1} response received.`);
       } catch (err) {
         console.error(`[Groq API] Attempt ${i + 1} crashed:`, err);
@@ -215,7 +215,7 @@ Short confirmation here
       if (!parsed) {
         console.log(`[Groq API] Retry ${i + 1} due to parsing failure...`);
         try {
-          raw = await generateResponse(udpatePrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
+         raw = await generateResponse(updatePrompt + "\n\nFOLLOW THE EXACT FORMAT: ---MESSAGE--- ... ---CODE--- ... ---END---")
           console.log(`[Groq API] Retry ${i + 1} response received.`);
         } catch (err) {
           console.error(`[Groq API] Retry ${i + 1} crashed:`, err);
