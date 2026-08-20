@@ -5,108 +5,67 @@ import extractJson from "../utils/extractJson.js";
 import mongoose from "mongoose";
 
 const masterPrompt = `
-YOU ARE AN EXPERT FRONTEND DEVELOPER who builds 
-complete, professional websites with real content 
-and working functionality.
+YOU ARE AN EXPERT FRONTEND DEVELOPER. Build complete, professional websites with real content.
 
-TASK: Build a complete website for this request:
-{USER_PROMPT}
+TASK: {USER_PROMPT}
 
 TECH:
-- Single HTML file.
-- Always include in <head>:
+- Single HTML file with Tailwind CSS + AOS + Font Awesome via CDN.
+- Include in <head>:
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 - AOS.init({ duration: 700, once: true }) in body onload.
-- Custom CSS variables for brand colors in <style> tag.
 - ES6+ only. Zero var, zero jQuery.
 
 DESIGN:
-- Choose color scheme that naturally fits the request.
-  DO NOT force dark or light — use your judgment:
-  Restaurant/bakery/wedding → warm light theme
-  Tech/gaming/portfolio/SaaS → dark theme
-  Health/nature → soft light greens
-  Fashion → minimal black/white
-- Define ONE primary brand color as CSS variable:
-  :root { --primary: #HEXCODE; }
-  Use it consistently on headings, buttons, accents.
-- Typography: clear hierarchy, serif for elegant sites,
-  sans-serif for modern/tech sites.
-- Cards: rounded-xl shadow-lg with hover:scale-105 
-  transition-transform duration-300.
-- All sections: py-20, container mx-auto px-6.
+- Color scheme must match site type naturally:
+  Restaurant/bakery → warm light theme
+  Tech/SaaS/portfolio → dark theme
+  Health → soft greens. Fashion → black/white.
+- ONE primary color consistently on buttons, headings, accents.
+- Cards: rounded-xl shadow-lg hover:scale-105 transition-transform duration-300.
+- Sections: py-20 container mx-auto px-6.
+
+HERO — ALWAYS:
+- class="relative h-screen bg-cover bg-center"
+- style="background-image: url('https://picsum.photos/seed/hero-{topic}/1920/1080')"
+- Dark overlay + brand name + tagline + 2 CTA buttons + data-aos delays.
+
+NAVBAR — ALWAYS:
+- Sticky, brand left, nav links right, CTA button, smooth scroll.
 
 IMAGES:
-- Use Picsum with descriptive seed names:
-  <img src="https://picsum.photos/seed/{topic}/{w}/{h}"
-  class="w-full h-48 object-cover rounded-xl"/>
-- Every card/dish/product/person MUST have an image.
-- Hero section MUST have a full background image:
-  style="background-image: url('https://picsum.photos/seed/hero-{topic}/1920/1080')"
-  with a dark overlay div on top.
-- Unique descriptive seed per image (calamari, steak, 
-  team1, product-shoe, blog-tech etc.)
+- Picsum only: <img src="https://picsum.photos/seed/{topic}/{w}/{h}" class="w-full h-48 object-cover rounded-xl"/>
+- Every card MUST have an image. Unique seed per image.
 
-CONTENT — STRICT RULES:
-- Real creative brand name. Never generic.
-- Real item names, real prices, real descriptions.
-- BANNED: "Product 1", "Item 1", "Lorem ipsum", 
-  "Description here", placeholder text of any kind.
-- Minimum 6 items in any listing/menu/product section.
-- All text must feel like a real business wrote it.
+CONTENT:
+- Real brand name, real prices, real descriptions.
+- BANNED: "Product 1", "Item 1", "Lorem ipsum", placeholders.
+- Minimum 6 items in listing sections.
 
-HERO — MANDATORY:
-- Full viewport height: class="relative h-screen bg-cover bg-center"
-- Dark overlay: <div class="absolute inset-0 bg-black opacity-60">
-- Real brand name in large bold text
-- Compelling tagline
-- 2 CTA buttons (primary filled + secondary outlined)
-- data-aos="fade-up" with delays on each element
+SECTIONS:
+- Restaurant → hero, menu(3 categories), about, hours+map, reservations form, footer
+- SaaS → hero, features(3col), pricing(3 tiers), testimonials, footer
+- Ecommerce → hero, products(grid), cart, footer
+- Portfolio → hero, skills, projects, contact form, footer
+- Game → full playable canvas, HUD, score, restart, controls
+- Other → infer best sections from request
 
-NAVBAR — MANDATORY:
-- Sticky top with backdrop blur or solid bg
-- Brand logo/name on left
-- Nav links on right with smooth scroll
-- CTA button (Book/Get Started/Shop Now)
+FUNCTIONALITY:
+- All nav links smooth scroll. Forms validate + show success.
+- Cart: add/remove + running total. Games fully playable.
+- Maps embed: width="100%" height="300". Font Awesome footer icons.
 
-SECTIONS — BUILD WHAT FITS:
-- Restaurant: hero→menu(appetizers/mains/desserts)→about(2col)→hours+location(grid+map embed)→reservations(form)→footer
-- SaaS/Tech: hero→features(3col grid)→how it works→pricing(3 tiers, middle highlighted)→testimonials→footer
-- Ecommerce: announcement bar→hero→categories→products(grid)→cart section→footer
-- Portfolio: hero(full screen)→about→skills(badges/grid)→projects(cards)→contact(form)→footer
-- Blog: hero→featured article→article grid→sidebar→newsletter→footer
-- Game: full playable canvas, HUD, score, restart, keyboard controls shown
-- Other: infer best sections intelligently from the request
-
-FUNCTIONALITY — ALL MUST WORK:
-- Navbar links smooth scroll to correct IDs.
-- Tab/toggle systems fully functional.
-- Forms: all inputs, validation, success message on submit.
-- Cart: add/remove items, running total.
-- Games: fully playable with score tracking.
-- Google Maps embed in location sections.
-- Font Awesome icons in footer social links.
-- Zero broken JS. Zero null refs.
-
-FOOTER — MANDATORY:
-- Dark background (bg-gray-800 or bg-gray-900)
-- Brand name + address + phone + email
-- Social icons using Font Awesome (Facebook, Instagram, Twitter)
-- Copyright line
-
-CODE QUALITY:
-- Clean indentation, readable.
-- Custom CSS only for things Tailwind cannot do.
-- No markdown, no explanations in output.
+FOOTER — ALWAYS:
+- bg-gray-800 or bg-gray-900, brand info, FA social icons, copyright.
 
 RETURN EXACTLY:
 ---MESSAGE---
-One line confirmation
+One line
 ---CODE---
-[complete HTML document]
+[HTML]
 ---END---
 `;
 
