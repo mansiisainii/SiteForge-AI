@@ -1,10 +1,10 @@
 # SiteForge-AI 🚀
 
-SiteForge AI is an advanced AI-powered website builder that lets users generate, customize, and deploy websites using natural language prompts — featuring prebuilt stunning templates, a coin-based usage system, and one-click deployment. Built with modern web technologies and the Groq API for lightning-fast AI generation.
+SiteForge AI is an advanced AI-powered website builder that lets users generate, customize, and deploy websites using natural language prompts — featuring prebuilt stunning templates, a coin-based usage system, and one-click deployment. Built with modern web technologies and the Gemini API for lightning-fast AI generation.
 
 ## 🌟 Features
 
-- **AI-Powered Website Generation**: Describe your website in plain English and get a fully functional HTML, Tailwind CSS, and JS website generated instantly using Groq API.
+- **AI-Powered Website Generation**: Describe your website in plain English and get a fully functional HTML, Tailwind CSS, and JS website generated instantly using Gemini API.
 - **Prebuilt Templates**: 6 stunning hand-crafted templates (Portfolio, SaaS, Restaurant, E-commerce, Blog, Agency) — zero coins required to use.
 - **Live Preview & Code View**: Instantly preview your generated website and access the raw HTML/CSS/JS code to copy or self-host.
 - **AI-Powered Editing**: Refine and modify any section of your website at any time using natural language prompts.
@@ -31,7 +31,7 @@ SiteForge AI is an advanced AI-powered website builder that lets users generate,
 - **Environment**: Node.js, Express.js
 - **Database**: MongoDB (Mongoose)
 - **Authentication**: JWT (JSON Web Tokens)
-- **AI Integration**: Groq SDK
+- **AI Integration**: Gemini SDK
 - **Payments**: Razorpay
 
 ## 🚀 Getting Started
@@ -41,7 +41,7 @@ Follow these steps to set up the project locally.
 ### Prerequisites
 - Node.js installed on your machine
 - MongoDB instance (local or Atlas)
-- API Keys for Groq, Firebase, and Razorpay
+- API Keys for Gemini, Firebase, and Razorpay
 
 ### Installation
 
@@ -61,7 +61,7 @@ Follow these steps to set up the project locally.
    PORT=8000
    MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
-   GROQ_API_KEY=your_groq_api_key
+   GEMINI_API_KEY=your_gemini_api_key
    RAZORPAY_KEY_ID=your_razorpay_key
    RAZORPAY_KEY_SECRET=your_razorpay_secret
    ```
@@ -121,7 +121,7 @@ SiteForge-AI/
 ```
 1. Login with Google OAuth
 2. Pick a prebuilt template (0 coins) OR describe your website
-3. Groq AI generates a complete HTML + Tailwind CSS + JS file
+3. Gemini AI generates a complete HTML + Tailwind CSS + JS file
 4. Preview live, view source code, edit with natural language
 5. Deploy with one click → get a shareable live link
 ```
