@@ -36,7 +36,7 @@ export const generateResponse = async (prompt) => {
 
       return response
     } catch (error) {
-      if (error.status === 503 && retries > 1) {
+      if (error.message && error.message.includes('503') && retries > 1) {
         console.warn(`503 Service Unavailable. Retrying... (${retries - 1} attempts left)`);
         retries--;
         await new Promise(resolve => setTimeout(resolve, 3000));
